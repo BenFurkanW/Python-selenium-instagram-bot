@@ -1,4 +1,5 @@
 # Gerekli olan kütüphaneleri import ettik
+from fileinput import close
 from re import search
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -14,35 +15,27 @@ class Instagram:
         
 # Giriş yapmak için fonksiyon yazdık
     def singIn(self):
-        
         self.browser.get("https://www.instagram.com/accounts/login/")
-        
-        time.sleep(3)
+        time.sleep(2)
         
 # Ekranı Full screen yaptık
         self.browser.maximize_window()
-        
-        time.sleep(3)
-        
+        time.sleep(1)
         username1 = self.browser.find_element(By.XPATH, "//*[@id='loginForm']/div/div[1]/div/label/input")
         Password1 = self.browser.find_element(By.XPATH , "//*[@id='loginForm']/div/div[2]/div/label/input")
         username1.send_keys(self.username)
         Password1.send_keys(self.password)
-        
-        time.sleep(3)
-        
+        time.sleep(1)
         giris_yap = self.browser.find_element(By.XPATH , "//*[@id='loginForm']/div/div[3]/button")
         giris_yap.click()
-        
-        time.sleep(3)
+        time.sleep(5)
         
 # Takipçiler kısmına girmek için fonksiyon 
     def getFollowers(self):
         self.browser.get(f"https://www.instagram.com/{self.username}/followers/")
-        
         time.sleep(3)
-        
 # JsKomut yerini burada çalıştırdık aşağıda açıklayacağım
+
         Instagram.scrolldown(self)
         
         followerList = []
@@ -58,14 +51,12 @@ class Instagram:
 # Dosya açtık ve for döngüsü ile dosyaya yazdırdık
         with open("followers.txt" , "w" , encoding="UTF-8") as file:
             for item in followerList:
-                file.write(str(item) + "\n")
-                
-        time.sleep(3)
+                file.write(str(item) + "\n")     
+        time.sleep(2)
         
 # Takip ettiklerimi almak için fonksiyon açtım
     def getFollow(self):
         self.browser.get(f"https://www.instagram.com/{self.username}/following/")
-        
         time.sleep(3)
         
 # JavaScript kullandım üstteki gibi
@@ -107,20 +98,24 @@ class Instagram:
         
 # Burada Takip ettiğiniz Ama sizi takip etmeyen kişileri yazdırması için fonksiyon yazdık
     def denkmi(self):
-            file_followers = open("followers.txt" , "r+" , encoding="UTF-8")
-            file_followers_read = file_followers.readlines()
-            file_followers_readed = [x[:-1] for x in file_followers_read]
-
-            file_following = open("following.txt" , "r+" , encoding="UTF-8")
-            file_following_read = file_following.readlines()
-            file_following_readed = [x[:-1] for x in file_following_read]
+        file_followers = open("followers.txt" , "r+" , encoding="UTF-8")
+        file_followers_read = file_followers.readlines()
+        file_followers_readed = [x[:-1] for x in file_followers_read]
+        
+        file_following = open("following.txt" , "r+" , encoding="UTF-8")
+        file_following_read = file_following.readlines()
+        file_following_readed = [x[:-1] for x in file_following_read]
             
-            with open("TakipEtmeyenler.txt" , "w" , encoding="UTF-8") as file:
-                    for i in file_following_readed:
+        with open("TakipEtmeyenler.txt" , "w" , encoding="UTF-8") as file:
+                 for i in file_following_readed:
                         if i not in file_followers_readed:
                                 file.write("Takip Etmiyor -->" + " " + str(i) + "\n")
                         else:
                                 continue
+                        
+# Sayfayı Kapamak için fonksiyon                
+    def close_(self):
+            self.browser.close()
             
 # Kullanıcıdan veri aldık
 username = input("Kullanıcı Adınızı Giriniz: ")   
@@ -132,3 +127,4 @@ instgrm.singIn()
 instgrm.getFollowers()
 instgrm.getFollow()
 instgrm.denkmi()
+instgrm.close_()
