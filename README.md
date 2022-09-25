@@ -1,3 +1,3 @@
 # Instagram-Takip-Etmeyenleri-Gorme
 
-Lütfen İnstagram herhangi bir koruyucunuz varsa kapayın telefon kod alma/Mail kod alma gibi
+Eğer instagram hesabınızda koruyucu(Girişlerde telefona veya maile gelen kodlar) var ise program hata verebilir, programı kullanabilmek için ilk onları kaldırın.
